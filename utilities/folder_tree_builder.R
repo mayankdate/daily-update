@@ -13,7 +13,10 @@ library(fs)
 library(stringr)
 
 # ---- Settings ----
-target_dir <- dirname(dirname(rstudioapi::getActiveDocumentContext()$path))
+# The folder to map. The VS Code task "Tool: print folder tree" passes the open project;
+# sourced in RStudio instead, it asks you to pick one.
+args <- commandArgs(trailingOnly = TRUE)
+target_dir <- if (length(args) > 0) args[1] else rstudioapi::selectDirectory("Pick the project folder to map")
 
 max_files_listed <- 20                  # per folder: list files up to this many, then summarize the rest
 
@@ -115,7 +118,8 @@ tree_lines <- c(paste0(path_file(target_dir), "/"), build_tree(target_dir))
 cat(tree_lines, sep = "\n")
 
 # Copy to clipboard (needs the clipr package). Paste into your doc.
-clipr::write_clip(tree_lines)
+clipr::write_clip(tree_lines, allow_non_interactive = TRUE)  # the VS Code task runs R non-interactively
+message("\nCopied to clipboard.")
 
 # Or save to a file:
 # writeLines(tree_lines, file.path(target_dir, "folder_tree.txt")
