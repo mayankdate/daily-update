@@ -20,7 +20,7 @@ git push
 Only for a repo whose history you truly don't need, e.g. one where a secret
 was committed. Even then, rotate the secret first: GitHub may still hold it.
 
-Wipe local history and start over (replace `REPO` with the repo name):
+Wipe local history and start over (replace `OWNER` with the GitHub account and `REPO` with the repo name):
 
 ```
 Remove-Item -Recurse -Force .git
@@ -28,7 +28,7 @@ git init
 git add -A
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin https://github.com/mayankdate/REPO.git
+git remote add origin https://github.com/OWNER/REPO.git
 git push -u origin main --force
 ```
 
